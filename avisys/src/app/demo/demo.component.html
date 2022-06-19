@@ -1,0 +1,119 @@
+<nav class=" navbar container">
+    <div class="add">
+        <button type="button"  class="btn btn-success"data-bs-toggle="modal" data-bs-target="#exampleModal" >Add Form</button>
+    </div>
+</nav>
+<table class="table table-striped">
+    <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Name</th>
+      <th scope="col">Email</th>
+      <th scope="col">Gender</th>
+      <th scope="col">Status</th>
+      <th scope="col">Update</th>
+      <th scope="col">Delete</th>
+
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let item of data">
+      <td>{{item.id}}</td>
+      <td> {{item.name}}</td>
+      <td>{{item.email}}</td>
+      <td>{{item.gender}}</td>
+      <td>{{item.status}}</td>
+      <td><button class="btn btn-info" data-bs-toggle="modal" data-bs-target="#update" (click)="select=item" >Update</button></td>
+      <td><button class="btn btn-danger" (click)="select=item;delectAll()">Delete</button></td>
+    </tr>
+    </tbody>
+</table>
+
+
+
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Employee Detail</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <!-- form -->
+                <form  #userForm="ngForm" (ngSubmit)="onSubmit(userForm.value)" >
+                    <div class="mb-3">
+                        <label for="exampleInputEmail1" class="form-label">Name</label>
+                        <input type="text"required #name="ngModel" ngModel name="name" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+                        <span   *ngIf=" name.invalid && name.touched" style="color:red">Please Enter Name</span>
+                                     <!-- #name=ngModel is for validation -->
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="exampleInputEmail1" class="form-label">Email address</label>
+                        <input type="email" ngModel required #email="ngModel" name="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+                        <span   *ngIf=" email.invalid && email.touched" style="color: red;">Please Enter Valid Email</span>
+
+                    </div>
+                    <div class="mb-3">
+                        <label  class="form-label">Gender</label><br>
+                        <input type="radio" value="male" name="gender" ngModel required #genderControl="ngModel"> Male
+                        <input type="radio" value="female" name="gender" ngModel required #genderControl="ngModel"> Female
+                        <input type="radio" value="other" name="gender" ngModel required #genderControl="ngModel"> Other <br>
+                        <span [hidden]="!genderControl.hasError('required')" style="color: red;"> Gender is required</span>
+                    </div>
+                    <div class="mb-3">
+                        <label for="exampleInputEmail1" class="form-label">Status</label>
+                        <select class="form-select" ngModel name="status">
+                            <option *ngFor="let n of status">{{n}}</option>
+                        </select>
+                    </div>
+                    <button  type="submit" data-bs-dismiss="modal" [disabled]="userForm.invalid" class="btn btn-primary " >Add+</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="update" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Employee Detail</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <!-- form -->
+                <form  #userForm="ngForm" (ngSubmit)="updateData(userForm.value)" >
+                    <div class="mb-3">
+                        <label for="exampleInputEmail1" class="form-label">Name</label>
+                        <input type="text"required #name="ngModel" [(ngModel)]="select.name" name="name" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+                        <span   *ngIf=" name.invalid && name.touched" style="color:red">Please Enter Name</span>
+
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="exampleInputEmail1" class="form-label">Email address</label>
+                        <input type="email" [(ngModel)]="select.email" required #email="ngModel" name="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+                        <span   *ngIf=" email.invalid && email.touched" style="color: red;">Please Enter Valid Email</span>
+
+                    </div>
+                    <div class="mb-3">
+                        <label  class="form-label">Gender</label><br>
+                        <input type="radio" value="male" name="gender" [(ngModel)]="select.gender" required #genderControl="ngModel"> Male
+                        <input type="radio" value="female" name="gender" [(ngModel)]="select.gender" required #genderControl="ngModel"> Female
+                        <input type="radio" value="other" name="gender" [(ngModel)]="select.gender" required #genderControl="ngModel"> Other
+                         
+                    </div>
+                    <div class="mb-3">
+                        <label for="exampleInputEmail1" class="form-label">Status</label>
+                        <select class="form-select" [(ngModel)]="select.status" name="status">
+                            <option *ngFor="let n of status">{{n}}</option>
+                        </select>
+                    </div>
+                    <button  type="submit" data-bs-dismiss="modal"   class="btn btn-primary" >Add+</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
